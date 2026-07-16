@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Monster Forge - Prompt Engine</title>
+
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>🐲 Monster Forge</h1>
+      <div class="subtitle">AI Prompt Engine</div>
+
+      <div class="grid">
+        <div class="card">
+          <div class="form-group">
+            <label>Species</label>
+            <select id="species">
+              <!-- Beast -->
+              <option>Wolf</option>
+              <option>Fox</option>
+              <option>Tiger</option>
+              <option>Bear</option>
+              <option>Lion</option>
+              <option>Panther</option>
+              <option>Rabbit</option>
+              <option>Deer</option>
+              <option>Boar</option>
+
+              <!-- Dragon -->
+              <option>Dragon</option>
+              <option>Wyvern</option>
+              <option>Drake</option>
+
+              <!-- Bird -->
+              <option>Phoenix</option>
+              <option>Eagle</option>
+              <option>Owl</option>
+              <option>Raven</option>
+              <option>Griffin</option>
+
+              <!-- Reptile -->
+              <option>Snake</option>
+              <option>Crocodile</option>
+              <option>Lizard</option>
+
+              <!-- Aquatic -->
+              <option>Shark</option>
+              <option>Octopus</option>
+              <option>Turtle</option>
+              <option>Leviathan</option>
+
+              <!-- Insect -->
+              <option>Spider</option>
+              <option>Scorpion</option>
+              <option>Mantis</option>
+              <option>Beetle</option>
+
+              <!-- Spirit -->
+              <option>Ghost</option>
+              <option>Spirit</option>
+              <option>Wisp</option>
+
+              <!-- Magical -->
+              <option>Slime</option>
+              <option>Golem</option>
+              <option>Treant</option>
+              <option>Unicorn</option>
+              <option>Cerberus</option>
+              <option>Hydra</option>
+              <option>Minotaur</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Element</label>
+            <select id="element">
+              <option>Fire</option>
+              <option>Water</option>
+              <option>Earth</option>
+              <option>Wind</option>
+              <option>Ice</option>
+              <option>Thunder</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Rarity</label>
+            <select id="rarity">
+              <option>Common</option>
+              <option>Rare</option>
+              <option>Epic</option>
+              <option>Legendary</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Pose</label>
+            <select id="pose">
+              <option>Standing</option>
+              <option>Walking</option>
+              <option>Attacking</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Background</label>
+            <select id="background">
+              <option>Transparent</option>
+              <option>White</option>
+              <option>Forest</option>
+              <option>Dungeon</option>
+              <option>Volcano</option>
+            </select>
+          </div>
+
+          <button class="primary" onclick="generateMonster()">
+            🎲 Generate
+          </button>
+
+          <button class="secondary" onclick="randomMonster()">🎲 Random</button>
+
+          <button class="success" onclick="copyPrompt()">📋 Copy Prompt</button>
+        </div>
+
+        <div class="card">
+          <h3>Monster JSON</h3>
+
+          <pre id="json"></pre>
+
+          <h3 style="margin-top: 20px">Prompt</h3>
+
+          <textarea id="prompt"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

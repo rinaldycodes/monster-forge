@@ -1,0 +1,104 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background: #111827;
+  color: white;
+  padding: 40px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+}
+
+h1 {
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  color: #9ca3af;
+  margin-bottom: 30px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 25px;
+}
+
+.card {
+  background: #1f2937;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #374151;
+  color: white;
+}
+
+textarea {
+  width: 100%;
+  height: 260px;
+  resize: none;
+  background: #111827;
+  color: #10b981;
+  border: none;
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+pre {
+  background: #111827;
+  padding: 15px;
+  border-radius: 10px;
+  overflow: auto;
+  color: #facc15;
+  margin-bottom: 20px;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.primary {
+  background: #3b82f6;
+  color: white;
+}
+
+.success {
+  background: #10b981;
+  color: white;
+}
+
+.secondary {
+  background: #374151;
+  color: white;
+}
