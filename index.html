@@ -16,61 +16,7 @@
         <div class="card">
           <div class="form-group">
             <label>Species</label>
-            <select id="species">
-              <!-- Beast -->
-              <option>Wolf</option>
-              <option>Fox</option>
-              <option>Tiger</option>
-              <option>Bear</option>
-              <option>Lion</option>
-              <option>Panther</option>
-              <option>Rabbit</option>
-              <option>Deer</option>
-              <option>Boar</option>
-
-              <!-- Dragon -->
-              <option>Dragon</option>
-              <option>Wyvern</option>
-              <option>Drake</option>
-
-              <!-- Bird -->
-              <option>Phoenix</option>
-              <option>Eagle</option>
-              <option>Owl</option>
-              <option>Raven</option>
-              <option>Griffin</option>
-
-              <!-- Reptile -->
-              <option>Snake</option>
-              <option>Crocodile</option>
-              <option>Lizard</option>
-
-              <!-- Aquatic -->
-              <option>Shark</option>
-              <option>Octopus</option>
-              <option>Turtle</option>
-              <option>Leviathan</option>
-
-              <!-- Insect -->
-              <option>Spider</option>
-              <option>Scorpion</option>
-              <option>Mantis</option>
-              <option>Beetle</option>
-
-              <!-- Spirit -->
-              <option>Ghost</option>
-              <option>Spirit</option>
-              <option>Wisp</option>
-
-              <!-- Magical -->
-              <option>Slime</option>
-              <option>Golem</option>
-              <option>Treant</option>
-              <option>Unicorn</option>
-              <option>Cerberus</option>
-              <option>Hydra</option>
-              <option>Minotaur</option>
-            </select>
+            <select id="species"></select>
           </div>
 
           <div class="form-group">
@@ -115,13 +61,13 @@
             </select>
           </div>
 
-          <button class="primary" onclick="generateMonster()">
+          <button id="btnGenerate" class="primary">
             🎲 Generate
           </button>
 
-          <button class="secondary" onclick="randomMonster()">🎲 Random</button>
+          <button id="btnRandom" class="secondary" >🎲 Random</button>
 
-          <button class="success" onclick="copyPrompt()">📋 Copy Prompt</button>
+          <button id="btnCopyPrompt" class="success">📋 Copy Prompt</button>
         </div>
 
         <div class="card">
@@ -137,6 +83,6 @@
     </div>
 
     <script src="js/data.js"></script>
-    <script src="js/app.js"></script>
+    <script type="module" src="js/app.js"></script>
   </body>
 </html>
