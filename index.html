@@ -22,84 +22,218 @@
     <link rel="manifest" href="./site.webmanifest" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Monster Forge - Prompt Engine</title>
-
+    <title>Monster Forge — Prompt Engine</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <div class="container">
-      <h1>🐲 Monster Forge</h1>
-      <div class="subtitle">AI Prompt Engine</div>
 
-      <div class="grid">
-        <div class="card">
-          <div class="form-group">
-            <label>Species</label>
-            <select id="species"></select>
-          </div>
-
-          <div class="form-group">
-            <label>Element</label>
-            <select id="element">
-              <option>Fire</option>
-              <option>Water</option>
-              <option>Earth</option>
-              <option>Wind</option>
-              <option>Ice</option>
-              <option>Thunder</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label>Rarity</label>
-            <select id="rarity">
-              <option>Common</option>
-              <option>Rare</option>
-              <option>Epic</option>
-              <option>Legendary</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label>Pose</label>
-            <select id="pose">
-              <option>Standing</option>
-              <option>Walking</option>
-              <option>Attacking</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label>Background</label>
-            <select id="background">
-              <option>Transparent</option>
-              <option>White</option>
-              <option>Forest</option>
-              <option>Dungeon</option>
-              <option>Volcano</option>
-            </select>
-          </div>
-
-          <button id="btnGenerate" class="primary">🎲 Generate</button>
-
-          <button id="btnRandom" class="secondary">🎲 Random</button>
-
-          <button id="btnCopyPrompt" class="success">📋 Copy Prompt</button>
+    <!-- ═══ N1b Nav ═══ -->
+    <nav class="nav" id="nav" role="navigation" aria-label="Main">
+      <div class="nav__inner">
+        <a class="nav__brand" href="#">Monster Forge</a>
+        <div class="nav__center">
+          <button class="nav__link">Library</button>
+          <button class="nav__link">Docs</button>
+          <button class="nav__link">API</button>
         </div>
+        <div class="nav__right">
+          <button class="btn btn--text">Sign in</button>
+          <button class="btn btn--accent" id="btnGenerate">Generate</button>
+          <button class="btn--icon" id="btnCmdkToggle" aria-label="Command palette">
+            <span>⌘</span>
+          </button>
+        </div>
+      </div>
+    </nav>
 
-        <div class="card">
-          <h3>Monster JSON</h3>
-
-          <div id="monsterName" class="monster-name">⚡ Generate a monster</div>
-
-          <pre id="json"></pre>
-
-          <h3 style="margin-top: 20px">Prompt</h3>
-
-          <textarea id="prompt"></textarea>
+    <!-- ═══ ⌘K Command Palette ═══ -->
+    <div class="cmdk" id="cmdk" role="dialog" aria-modal="true" aria-label="Command palette">
+      <div class="cmdk__backdrop" id="cmdkBackdrop"></div>
+      <div class="cmdk__panel">
+        <div class="cmdk__field">
+          <span class="cmdk__field-ico">⌘</span>
+          <input type="text" placeholder="Search actions…" id="cmdkInput" />
+          <kbd>ESC</kbd>
+        </div>
+        <div class="cmdk__results" id="cmdkResults">
+          <button class="cmdk__item" data-action="generate">
+            <span>🎲</span> Generate random monster
+          </button>
+          <button class="cmdk__item" data-action="random">
+            <span>🌀</span> Randomise all options
+          </button>
+          <button class="cmdk__item" data-action="copy">
+            <span>📋</span> Copy prompt to clipboard
+          </button>
+          <button class="cmdk__item" data-action="reset">
+            <span>🔄</span> Reset to defaults
+          </button>
+        </div>
+        <div class="cmdk__foot">
+          <span><kbd>↵</kbd> confirm</span>
+          <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+          <span><kbd>esc</kbd> close</span>
         </div>
       </div>
     </div>
+
+    <!-- ═══ Hero ═══ -->
+    <header class="hero">
+      <div class="hero__inner">
+        <div class="hero__copy">
+          <p class="hero__eyebrow" data-reveal>monster-forge</p>
+          <h1 class="hero__title" data-reveal>
+            Build better<br />prompts.
+          </h1>
+          <p class="hero__lede" data-reveal>
+            A developer tool for crafting detailed, structured AI image prompts.
+            Choose species, element, rarity &mdash; we generate the rest.
+          </p>
+          <div class="hero__cta-group" data-reveal>
+            <button class="btn btn--accent" id="btnGenerateHero">🎲 Generate</button>
+            <button class="btn btn--outline" id="btnRandomHero">🌀 Random</button>
+          </div>
+        </div>
+        <div class="hero__code" data-reveal>
+          <div class="code-card">
+            <div class="code-card__header">
+              <span class="code-card__dot"></span>
+              <span class="code-card__dot"></span>
+              <span class="code-card__dot"></span>
+              <span class="code-card__label">preview.json</span>
+            </div>
+            <div class="code-card__body" id="heroJsonPreview"><span class="hl-key">{
+  "monster"</span>: <span class="hl-str">"select options"</span><span class="hl-key">,
+  "status"</span>: <span class="hl-str">"ready"</span>
+}</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ═══ Workbench ═══ -->
+    <section class="workbench" aria-label="Prompt workbench">
+      <div class="workbench__grid">
+        <!-- Controls -->
+        <div class="controls-panel" data-reveal>
+          <p class="controls-panel__title">// controls</p>
+
+          <div class="form-group">
+            <label class="form-label" for="species">Species</label>
+            <div class="select-wrap">
+              <select id="species"></select>
+              <span class="select-arrow">▼</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="element">Element</label>
+            <div class="select-wrap">
+              <select id="element">
+                <option>Fire</option>
+                <option>Water</option>
+                <option>Earth</option>
+                <option>Wind</option>
+                <option>Ice</option>
+                <option>Thunder</option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="rarity">Rarity</label>
+            <div class="select-wrap">
+              <select id="rarity">
+                <option>Common</option>
+                <option>Rare</option>
+                <option>Epic</option>
+                <option>Legendary</option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="pose">Pose</label>
+            <div class="select-wrap">
+              <select id="pose">
+                <option>Standing</option>
+                <option>Walking</option>
+                <option>Attacking</option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="background">Background</label>
+            <div class="select-wrap">
+              <select id="background">
+                <option>Transparent</option>
+                <option>White</option>
+                <option>Forest</option>
+                <option>Dungeon</option>
+                <option>Volcano</option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
+          </div>
+
+          <div class="controls-panel__actions">
+            <button class="btn btn--accent btn--block" id="btnGenerateWb">🎲 Generate</button>
+            <button class="btn btn--outline btn--block" id="btnRandomWb">🌀 Random</button>
+          </div>
+        </div>
+
+        <!-- Output -->
+        <div class="output-panel" data-reveal>
+          <div class="output-panel__header">
+            <div class="output-panel__monster" id="monsterDisplay">
+              <span class="monster-accent">⚡</span> Generate a monster
+            </div>
+          </div>
+
+          <div class="code-card code-card--output">
+            <div class="code-card__header">
+              <span class="code-card__dot"></span>
+              <span class="code-card__dot"></span>
+              <span class="code-card__dot"></span>
+              <span class="code-card__label">monster.json</span>
+            </div>
+            <div class="code-card__body" id="jsonDisplay"><span class="hl-key">{
+  "monster"</span>: <span class="hl-str">"awaiting generation…"</span>
+}</div>
+          </div>
+
+          <div class="prompt-card">
+            <div class="prompt-card__header">
+              <span>prompt.txt</span>
+              <div class="prompt-card__header-actions">
+                <button class="btn--text" id="btnCopyPrompt" title="Copy to clipboard">📋 Copy</button>
+              </div>
+            </div>
+            <textarea id="promptDisplay" placeholder="Your generated prompt will appear here…"></textarea>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Footer ═══ -->
+    <footer class="foot">
+      <p>Monster Forge &middot; Prompt Engine &middot; MIT</p>
+      <ul class="foot__links">
+        <li><a href="#">GitHub</a></li>
+        <li><a href="#">Docs</a></li>
+        <li><a href="#">Changelog</a></li>
+      </ul>
+    </footer>
+
+    <!-- ═══ Toast ═══ -->
+    <div class="toast" id="toast" role="status" aria-live="polite">📋 Copied to clipboard</div>
 
     <script src="js/data.js"></script>
     <script type="module" src="js/app.js"></script>
