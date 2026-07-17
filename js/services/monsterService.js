@@ -8,7 +8,8 @@ export function createMonster(species, element, rarity, pose, background, colors
     rarity,
     pose,
     background,
-    color: colors[element],
+    color: colors[element].hex,
+    colorDetail: colors[element],
   };
 }
 
