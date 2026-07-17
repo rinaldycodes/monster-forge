@@ -1,6 +1,8 @@
+import { generateMonsterName } from "./nameGeneratorService.js";
+
 export function createMonster(species, element, rarity, pose, background, colors) {
   return {
-    name: element + " " + species,
+    name: generateMonsterName(species, element, rarity),
     species,
     element,
     rarity,

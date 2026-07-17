@@ -27,6 +27,7 @@ function generateMonster() {
     4,
   );
   document.getElementById("prompt").value = generatePrompt(monster);
+  document.getElementById("monsterName").textContent = "⚡ " + monster.name;
 }
 
 function randomMonster() {
