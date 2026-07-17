@@ -71,6 +71,9 @@
           <button class="cmdk__item" data-action="reset">
             <span>🔄</span> Reset to defaults
           </button>
+          <button class="cmdk__item" data-action="history">
+            <span>📜</span> View history
+          </button>
         </div>
         <div class="cmdk__foot">
           <span><kbd>↵</kbd> confirm</span>
@@ -231,6 +234,28 @@
         <li><a href="#">Changelog</a></li>
       </ul>
     </footer>
+
+    <!-- ═══ History Panel ═══ -->
+    <section class="history" id="historySection" aria-label="Generation history">
+      <div class="history__inner">
+        <div class="history__header">
+          <div class="history__header-left">
+            <span class="history__icon">📜</span>
+            <h2 class="history__title">History</h2>
+            <span class="history__count" id="historyCount">0</span>
+          </div>
+          <div class="history__header-actions">
+            <button class="btn--text history__btn" id="btnClearHistory" title="Clear all history">Clear all</button>
+          </div>
+        </div>
+        <div class="history__list" id="historyList">
+          <div class="history__empty">
+            <span class="history__empty-icon">⚡</span>
+            <p>Generate a monster &mdash; your history will appear here</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- ═══ Toast ═══ -->
     <div class="toast" id="toast" role="status" aria-live="polite">📋 Copied to clipboard</div>

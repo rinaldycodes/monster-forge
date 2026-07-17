@@ -4,6 +4,13 @@ import {
   generatePrompt,
   getRandomOption,
 } from "./services/monsterService.js";
+import {
+  getHistory,
+  addToHistory,
+  removeFromHistory,
+  clearHistory,
+  toggleFavorite,
+} from "./services/historyService.js";
 
 /* ── Helpers ──────────────────────────────────────────────────────────── */
 
@@ -24,6 +31,19 @@ function showToast(msg) {
   t.textContent = msg;
   t.classList.add("is-visible");
   setTimeout(() => t.classList.remove("is-visible"), 2200);
+}
+
+/* ── Relative time helper ─────────────────────────────────────────────── */
+function timeAgo(ts) {
+  const diff = Date.now() - ts;
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return 'just now';
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  const days = Math.floor(hrs / 24);
+  if (days < 7) return `${days}d ago`;
+  return new Date(ts).toLocaleDateString();
 }
 
 /* ── Generate ─────────────────────────────────────────────────────────── */
@@ -50,6 +70,10 @@ function generateMonster() {
   /* Update prompt textarea */
   const prompt = generatePrompt(monster);
   qs("promptDisplay").value = prompt;
+
+  /* Save to history */
+  addToHistory(monster, prompt);
+  renderHistory();
 }
 
 /* ── Random ───────────────────────────────────────────────────────────── */
@@ -102,6 +126,87 @@ function initReveals() {
   document.querySelectorAll("[data-reveal]").forEach(el => obs.observe(el));
 }
 
+/* ── History ──────────────────────────────────────────────────────────── */
+let activeHistoryId = null;
+
+function renderHistory() {
+  const history = getHistory();
+  const list = qs("historyList");
+  const count = qs("historyCount");
+  count.textContent = history.length;
+  if (history.length === 0) {
+    list.innerHTML = `<div class="history__empty"><span class="history__empty-icon">⚡</span><p>Generate a monster &mdash; your history will appear here</p></div>`;
+    return;
+  }
+  list.innerHTML = history.map(e => {
+    const el = e.monster.element;
+    const rar = e.monster.rarity.toLowerCase();
+    const c = monsterColors[el]?.hex || "#9CA3AF";
+    const rc = rarityColors[e.monster.rarity]?.hex || "#9CA3AF";
+    const fav = e.favorite ? "is-fav" : "";
+    const act = e.id === activeHistoryId ? "is-active" : "";
+    return `<div class="history__entry ${act}" data-id="${e.id}">
+      <span class="history__entry-dot" style="background:${c}"></span>
+      <div class="history__entry-info">
+        <span class="history__entry-name">${e.monster.name}</span>
+        <div class="history__entry-meta">
+          <span class="history__entry-badge" style="color:${rc};background:color-mix(in srgb, ${rc} 15%, transparent)">${e.monster.rarity}</span>
+          <span>${e.monster.species}</span><span>·</span><span>${el}</span><span>·</span>
+          <span class="history__entry-date">${timeAgo(e.timestamp)}</span>
+        </div>
+      </div>
+      <div class="history__entry-actions">
+        <button class="history__entry-action ${fav}" data-fav="${e.id}" title="Favorite">★</button>
+        <button class="history__entry-action--delete" data-del="${e.id}" title="Delete">✕</button>
+      </div></div>`;
+  }).join("");
+}
+
+function restoreFromHistory(id) {
+  const history = getHistory();
+  const entry = history.find(e => e.id === id);
+  if (!entry) return;
+  activeHistoryId = id;
+  const m = entry.monster;
+  qs("species").value = m.species;
+  qs("element").value = m.element;
+  qs("rarity").value = m.rarity;
+  qs("pose").value = m.pose;
+  qs("background").value = m.background;
+  const monster = createMonster(m.species, m.element, m.rarity, m.pose, m.background, monsterColors);
+  qs("monsterDisplay").innerHTML = `<span style="color:${monsterColors[m.element]?.hex || "#fff"}">⚡</span> ${monster.name}`;
+  const hl = jsonHighlight(monster);
+  qs("jsonDisplay").innerHTML = hl;
+  qs("heroJsonPreview").innerHTML = hl;
+  qs("promptDisplay").value = generatePrompt(monster);
+  renderHistory();
+  window.scrollTo({ top: qs("historySection").offsetTop - 100, behavior: "smooth" });
+}
+
+function initHistory() {
+  renderHistory();
+  qs("historyList").addEventListener("click", (e) => {
+    const entry = e.target.closest(".history__entry");
+    if (!entry || e.target.closest("[data-fav]") || e.target.closest("[data-del]")) return;
+    restoreFromHistory(entry.dataset.id);
+  });
+  qs("historyList").addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-fav]");
+    if (!btn) return; e.stopPropagation();
+    toggleFavorite(btn.dataset.fav); renderHistory();
+  });
+  qs("historyList").addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-del]");
+    if (!btn) return; e.stopPropagation();
+    if (activeHistoryId === btn.dataset.del) activeHistoryId = null;
+    removeFromHistory(btn.dataset.del); renderHistory(); showToast("🗑️ Entry removed");
+  });
+  qs("btnClearHistory").addEventListener("click", () => {
+    if (getHistory().length === 0) return;
+    clearHistory(); activeHistoryId = null; renderHistory(); showToast("🗑️ History cleared");
+  });
+}
+
 /* ── Populate species ─────────────────────────────────────────────────── */
 async function populateSpecies() {
   const species = await getAllSpecies();
@@ -120,6 +225,7 @@ async function populateSpecies() {
 document.addEventListener("DOMContentLoaded", () => {
   populateSpecies();
   initReveals();
+  initHistory();
   handleScroll(); /* set initial state */
 });
 
@@ -164,6 +270,11 @@ qs("cmdkResults")?.addEventListener("click", (e) => {
   if (action === "random")   { randomMonster();   toggleCmdk(false); }
   if (action === "copy")     { copyPrompt();      toggleCmdk(false); }
   if (action === "reset")    { resetDefaults();   toggleCmdk(false); }
+  if (action === "history") {
+    toggleCmdk(false);
+    const section = qs("historySection");
+    if (section) section.scrollIntoView({ behavior: "smooth" });
+  }
 });
 
 /* Filter command palette items on input */
