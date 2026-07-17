@@ -1,4 +1,4 @@
-# 🐲 Monster Forge — AI Prompt Engine
+# 🐲 Monster Forge — AI Prompt Engine V2
 
 A web app to **generate AI prompts** for fantasy monster characters. Pick species, element, rarity, pose, and background — then get a ready-to-use prompt along with the monster's JSON data.
 
